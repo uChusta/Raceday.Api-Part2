@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RaceDay.Contracts
 {
-    internal class Dtos
+    public class Dtos
     {
+        
     }
 }
