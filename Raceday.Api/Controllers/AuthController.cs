@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Raceday.Api.Models;
 using RaceDay.Contracts;
+using BCrypt.Net;
 
 
 namespace Raceday.Api.Controllers
