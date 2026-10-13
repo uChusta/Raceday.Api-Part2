@@ -23,13 +23,13 @@ namespace Raceday.Api.Controllers
 
         // register endpoint
         [HttpPost("register")]
-        public async Task<IActionResult> Register ([FromBody] RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            if(dto.user_role != "Organiser" && dto.user_role != "Participant")
+            if (dto.user_role != "Organiser" && dto.user_role != "Participant")
             {
                 return BadRequest("Invalid user role. Must be either 'Organiser' or 'Participant'.");
             }
-            if(await _context.Users.AnyAsync(u => u.email == dto.email))
+            if (await _context.Users.AnyAsync(u => u.email == dto.email))
             {
                 return Conflict("Email already exists.");
             }
@@ -53,7 +53,7 @@ namespace Raceday.Api.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status201Created, new {message = "User registered successfully.", userID = user.userID});
+            return StatusCode(StatusCodes.Status201Created, new { message = "User registered successfully.", userID = user.userID });
         }
 
         // login endpoint
@@ -89,6 +89,15 @@ namespace Raceday.Api.Controllers
             HttpContext.Session.SetString("user_role", user.user_role);
 
             return Ok(new { message = "Login successful.", role = user.user_role });
+        }
+
+        // logout endpoint
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
+            return Ok(new { message = "Logout successful." });
         }
     }
 }
