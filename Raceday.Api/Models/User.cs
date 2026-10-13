@@ -24,6 +24,7 @@ namespace Raceday.Api.Models
         [Required, DataType(DataType.Date)]
         public DateTime date_of_birth { get; set; }
         public int? clubID { get; set; }
+        [ForeignKey(nameof(clubID))]
         public Club? Club { get; set; }
 
     }
