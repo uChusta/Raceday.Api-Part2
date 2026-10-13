@@ -24,4 +24,28 @@ namespace RaceDay.Contracts
       public string email { get; set; } = string.Empty;
       public string user_password { get; set; } = string.Empty;
     }
+
+    public class CategoryDto
+    {
+        public string name { get; set; } = string.Empty;
+        public decimal distance_KM { get; set; }
+        public TimeSpan start_time { get; set; }
+        public decimal entry_fee { get; set; }
+        public string age_category { get; set; } = string.Empty;
+        public int max_entries { get; set; }
+    }
+
+    public class EnrolmentDto
+    {
+       public int categoryID { get; set; }
+       public string racer_number { get; set; } = string.Empty;
+    }
+
+    public class ResultDto
+    {
+        public int enrolmentID { get; set; }
+        public TimeSpan finish_time { get; set; }
+        public int? category_position { get; set; }
+        public string status { get; set; } = "Finished"; // "Finished", "DNF", "DSQ"
+    }
 }

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Raceday.Api.Models;
+using RaceDay.Contracts;
 
 
 namespace Raceday.Api.Controllers
