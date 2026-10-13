@@ -10,7 +10,7 @@ namespace Raceday.Api
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EventsController: ControllerBase
+    public class EventsController : ControllerBase
     {
         // private field for the database context
         private readonly RaceDayDbContext _context;
@@ -26,7 +26,7 @@ namespace Raceday.Api
         public async Task<IActionResult> GetAllEvents()
         {
             // Get all events with status "Published"
-            var events = await _context.Events.Where(e=> e.status == "Published").ToListAsync();
+            var events = await _context.Events.Where(e => e.status == "Published").ToListAsync();
             return Ok(events);
         }
 
@@ -46,9 +46,25 @@ namespace Raceday.Api
         [HttpPost("{eventID}/enrol")]
         [Authorize(Roles = "Participant")]
         public IActionResult EnrolInEvent(int eventID)
-        { 
-            return Ok(new {message =$"Participant enrolled in event {eventID} successfully."});
+        {
+            return Ok(new { message = $"Participant enrolled in event {eventID} successfully." });
         }
 
+        //retrive details of a specific event using eventID, can be accessed by both organisers and participants
+        [HttpGet("{eventID}")]
+        public async Task<IActionResult> GetEventById(int eventID)
+        {
+            var eventDetails = await _context.Events.FindAsync(eventID);
+            if (eventDetails == null)
+            {
+                return NotFound($"Event with ID {eventID} not found.");
+            }
+            return Ok(eventDetails);
+        }
+
+        //Organiser can create new event
+        [HttpPost]
+        [Authorize(Roles = "Organiser")]
+        public async Task <IActionResult> CreateEvent([FromBody] ) 
     }
 }

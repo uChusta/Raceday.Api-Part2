@@ -15,7 +15,7 @@ namespace Raceday.Api.Models
         [Required,]
         public string description { get; set; } = string.Empty;
         [Required, RegularExpression("Running|Cycling|Walking|Multisport")]
-        public string Eevent_type { get; set; } = string.Empty;
+        public string event_type { get; set; } = string.Empty;
         [Required]
         public DateTime event_date { get; set; }
         [Required]

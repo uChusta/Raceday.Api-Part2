@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace RaceDay.Contracts
 {
+    // DTO for user registration
     public class RegisterDto
     {
         public string fullname { get; set; } = string.Empty;
@@ -19,12 +23,41 @@ namespace RaceDay.Contracts
         public int? clubID { get; set; }
     }
 
+    // DTO for user login
     public class LoginDto
     {
       public string email { get; set; } = string.Empty;
       public string user_password { get; set; } = string.Empty;
     }
 
+    public class EventCreateDto
+    {
+        public string title { get; set; } = string.Empty;
+        public string description { get; set; } = string.Empty;
+        public string event_type { get; set; } = string.Empty; // "Running", "Cycling", "Walking", "Multisport"
+        public DateTime event_date { get; set; }
+        public DateTime registration_deadline { get; set; }
+        public string venue { get; set; } = string.Empty;
+        public string city { get; set; } = string.Empty;
+        public string province { get; set; } = string.Empty;
+        public string status { get; set; } = "Draft"; // "Draft", "Published","Completed", "Cancelled"
+    }
+
+    //DTO for Event update
+    public class EventUpdateDto
+    {
+        public string title { get; set; } = string.Empty;
+        public string description { get; set; } = string.Empty;
+        public string event_type { get; set; } = string.Empty; // "Running", "Cycling", "Walking", "Multisport"
+        public DateTime event_date { get; set; }
+        public DateTime registration_deadline { get; set; }
+        public string venue { get; set; } = string.Empty;
+        public string city { get; set; } = string.Empty;
+        public string province { get; set; } = string.Empty;
+        public string status { get; set; } = "Draft"; // "Draft", "Published","Completed", "Cancelled"
+    }
+
+    // DTO for event category selection
     public class CategoryDto
     {
         public string name { get; set; } = string.Empty;
@@ -35,12 +68,14 @@ namespace RaceDay.Contracts
         public int max_entries { get; set; }
     }
 
+    // DTO for enrolment in an event category
     public class EnrolmentDto
     {
        public int categoryID { get; set; }
        public string racer_number { get; set; } = string.Empty;
     }
 
+    // DTO for race result submission
     public class ResultDto
     {
         public int enrolmentID { get; set; }
