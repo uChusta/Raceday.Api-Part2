@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
-namespace Raceday.Api
+namespace Raceday.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
