@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Raceday.Api
 {
@@ -54,7 +55,7 @@ namespace Raceday.Api
         [HttpGet("{eventID}")]
         public async Task<IActionResult> GetEventById(int eventID)
         {
-            var eventDetails = await _context.Events.FindAsync(eventID);
+            var eventDetails = await _context.Events.Include(e => e.Categories).FirstOrDefaultAsync(e => e.eventID == eventID);
             if (eventDetails == null)
             {
                 return NotFound($"Event with ID {eventID} not found.");
@@ -65,6 +66,99 @@ namespace Raceday.Api
         //Organiser can create new event
         [HttpPost]
         [Authorize(Roles = "Organiser")]
-        public async Task <IActionResult> CreateEvent([FromBody] ) 
+        public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto eventDto)
+        { 
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int organiserId))
+            { 
+                return Unauthorized(new {message = "Invalid user ID."});
+            }
+
+            var newEvent = new Event
+            {
+                title = eventDto.title,
+                description = eventDto.description,
+                event_type = eventDto.event_type,
+                event_date = eventDto.event_date,
+                registration_deadline = eventDto.registration_deadline,
+                venue = eventDto.venue,
+                city = eventDto.city,
+                province = eventDto.province,
+                status = "Draft", // Default status
+                organiserID = organiserId // Set the organiser ID
+            };
+            _context.Events.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status201Created, newEvent);
+        }
+
+        //Organiser can update existing event
+        [HttpPut("{eventID}")]
+        [Authorize(Roles = "Organiser")]
+        public async Task<IActionResult> UpdateEvent(int eventID, [FromBody] EventUpdateDto eventDto)
+        {
+        
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int organiserId))
+            {
+                return Unauthorized(new { message = "Invalid user ID." });
+            }
+
+            var eventItem = await _context.Events.FindAsync(eventID);
+            if (eventItem == null)
+            {
+                return NotFound(new { message = $"Event with ID {eventID} not found." });
+            }
+
+            //check if the organiser is the owner of the event
+            if (eventItem.organiserID != organiserId)
+            {
+                return Forbid();
+            }
+
+            eventItem.title = eventDto.title;
+            eventItem.description = eventDto.description;
+            eventItem.event_type = eventDto.event_type;
+            eventItem.event_date = eventDto.event_date;
+            eventItem.registration_deadline = eventDto.registration_deadline;
+            eventItem.venue = eventDto.venue;
+            eventItem.city = eventDto.city;
+            eventItem.province = eventDto.province;
+            eventItem.status = eventDto.status;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Event with ID {eventID} updated successfully.", eventID = eventItem.eventID });
+        }
+
+        //Organiser can delete existing event
+        [HttpDelete("{eventID}")]
+        [Authorize(Roles = "Organiser")]
+        public async Task<IActionResult> DeleteEvent(int eventID)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int organiserId))
+            {
+                return Unauthorized(new { message = "Invalid user ID." });
+            }
+
+            var eventItem = await _context.Events.FindAsync(eventID);
+            if (eventItem == null)
+            {
+                return NotFound(new { message = $"Event with ID {eventID} not found." });
+            }
+
+            //check if the organiser is the owner of the event
+            if (eventItem.organiserID != organiserId)
+            {
+                return Forbid();
+            }
+
+            _context.Events.Remove(eventItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Event with ID {eventID} deleted successfully." });
+        }
     }
 }
