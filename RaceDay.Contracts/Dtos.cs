@@ -83,4 +83,14 @@ namespace RaceDay.Contracts
         public int? category_position { get; set; }
         public string status { get; set; } = "Finished"; // "Finished", "DNF", "DSQ"
     }
+
+    // DTO for club creation
+    public class ClubDto
+    {
+        public string club_name { get; set; } = string.Empty;
+        public string province { get; set; } = string.Empty;
+        public string city { get; set; } = string.Empty;
+        public string contact_email { get; set; } = string.Empty;
+        public string sport_type { get; set; } = string.Empty; // "Running", "Cycling", "Walking", "Multisport"
+    }
 }
