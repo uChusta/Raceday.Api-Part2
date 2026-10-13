@@ -26,6 +26,8 @@ namespace Raceday.Api.Models
         public int? clubID { get; set; }
         [ForeignKey(nameof(clubID))]
         public Club? Club { get; set; }
+        public ICollection<Event> Events { get; set; } = new List<Event>();
+        public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
 
     }
 }

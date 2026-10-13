@@ -22,5 +22,6 @@ namespace Raceday.Api.Models
         public string age_category { get; set; } = string.Empty;
         [Required, Range(1, int.MaxValue)]
         public int max_entries { get; set; }
+        public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
     }
 }

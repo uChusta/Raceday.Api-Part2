@@ -19,5 +19,6 @@ namespace Raceday.Api.Models
         public DateTime enrolment_date { get; set; }
         [Required, RegularExpression("Pending|Paid|Cancelled")]
         public string payment_status { get; set; } = "Pending";
+        public ICollection<Result> Results { get; set; } = new List<Result>();
     }
 }
