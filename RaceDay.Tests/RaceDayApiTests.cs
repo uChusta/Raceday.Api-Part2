@@ -14,6 +14,7 @@ using Raceday.Api.Data;
 using RaceDay.Contracts;
 using Raceday.Api.Controllers;
 using Raceday.Api.Models;
+using Microsoft.AspNetCore.TestHost;
 
 namespace RaceDay.Tests;
 
