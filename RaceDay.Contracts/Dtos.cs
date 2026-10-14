@@ -43,22 +43,6 @@ namespace RaceDay.Contracts
         public string status { get; set; } = "Draft"; // "Draft", "Published","Completed", "Cancelled"
     }
 
-    //DTO for Event update
-    /*
-    public class EventUpdateDto
-    {
-        public string title { get; set; } = string.Empty;
-        public string description { get; set; } = string.Empty;
-        public string event_type { get; set; } = string.Empty; // "Running", "Cycling", "Walking", "Multisport"
-        public DateTime event_date { get; set; }
-        public DateTime registration_deadline { get; set; }
-        public string venue { get; set; } = string.Empty;
-        public string city { get; set; } = string.Empty;
-        public string province { get; set; } = string.Empty;
-        public string status { get; set; } = "Draft"; // "Draft", "Published","Completed", "Cancelled"
-    }
-    */
-    // DTO for event category selection
     public class CategoryDto
     {
         public string name { get; set; } = string.Empty;
