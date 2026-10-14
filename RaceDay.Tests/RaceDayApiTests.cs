@@ -148,7 +148,7 @@ public class RaceDayApiTests : IClassFixture<CustomWebApplicationFactory<Program
         var response = await _client.PostAsJsonAsync("/api/events", eventDto);
 
         //Assert - participant cannot create event
-        response.StatusCode.Should().Be(HttpStatusCode.Forbidden)
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
