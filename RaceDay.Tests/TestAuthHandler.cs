@@ -14,6 +14,12 @@ using Raceday.Api.Data;
 using RaceDay.Contracts;
 using Raceday.Api.Controllers;
 using Raceday.Api.Models;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace RaceDay.Tests;
 
