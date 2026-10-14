@@ -32,18 +32,6 @@ namespace Raceday.Api.Controllers
             return Ok(events);
         }
 
-        //only accessed by organisers
-        [HttpPost]
-        [Authorize(Roles = "Organiser")]
-        public async Task<IActionResult> CreateEvent([FromBody] Event eventDto)
-        {
-            // Set the status to "Draft" by default
-            eventDto.status = "Draft";
-            _context.Events.Add(eventDto);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAllEvents), new { id = eventDto.eventID }, eventDto);
-        }
-
         //only accessed by participants
         [HttpPost("{eventID}/enrol")]
         [Authorize(Roles = "Participant")]
@@ -67,7 +55,7 @@ namespace Raceday.Api.Controllers
         //Organiser can create new event
         [HttpPost]
         [Authorize(Roles = "Organiser")]
-        public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto eventDto)
+        public async Task<IActionResult> CreateEvent([FromBody] EventDto eventDto)
         { 
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!int.TryParse(userIdString, out int organiserId))
@@ -97,7 +85,7 @@ namespace Raceday.Api.Controllers
         //Organiser can update existing event
         [HttpPut("{eventID}")]
         [Authorize(Roles = "Organiser")]
-        public async Task<IActionResult> UpdateEvent(int eventID, [FromBody] EventUpdateDto eventDto)
+        public async Task<IActionResult> UpdateEvent(int eventID, [FromBody] EventDto eventDto)
         {
         
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);

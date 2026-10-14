@@ -30,7 +30,7 @@ namespace RaceDay.Contracts
       public string user_password { get; set; } = string.Empty;
     }
 
-    public class EventCreateDto
+    public class EventDto
     {
         public string title { get; set; } = string.Empty;
         public string description { get; set; } = string.Empty;
@@ -44,6 +44,7 @@ namespace RaceDay.Contracts
     }
 
     //DTO for Event update
+    /*
     public class EventUpdateDto
     {
         public string title { get; set; } = string.Empty;
@@ -56,7 +57,7 @@ namespace RaceDay.Contracts
         public string province { get; set; } = string.Empty;
         public string status { get; set; } = "Draft"; // "Draft", "Published","Completed", "Cancelled"
     }
-
+    */
     // DTO for event category selection
     public class CategoryDto
     {
