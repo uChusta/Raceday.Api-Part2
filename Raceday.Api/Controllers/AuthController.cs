@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Raceday.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
