@@ -35,6 +35,8 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         {
             options.UseInMemoryDatabase("InMemoryDbForTesting");
         });
+
+        
         // Build the service provider
         var sp = services.BuildServiceProvider();
         // Create a scope to obtain a reference to the database context (RaceDayDbContext)
@@ -45,6 +47,15 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 db.Database.EnsureCreated();
                 // Seed the database with test data if needed
                 // SeedData(db)
+        });
+
+        builder.ConfigureTestServices(services =>
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = TestAuthHandler.SchemeName;
+                options.DefaultChallengeScheme = TestAuthHandler.SchemeName;
+            }).AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.SchemeName, _ => { });
         });
     }
 }
@@ -90,7 +101,7 @@ public class RaceDayApiTests : IClassFixture<CustomWebApplicationFactory<Program
         };
 
 
-        var loginResponse = await _client.PostAsJsonAsync("/api/auth/register", loginDto);
+        var loginResponse = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
 
         //Assert - Check if login was successful
         loginResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -129,11 +140,15 @@ public class RaceDayApiTests : IClassFixture<CustomWebApplicationFactory<Program
 
         };
 
+        // Add test auth header identifying a Participant
+        _client.DefaultRequestHeaders.Remove("X-Test-User");
+        _client.DefaultRequestHeaders.Add("X-Test-User", "999|Participant");
+
         //Act
-        var result = await controller.CreateEvent(eventDto);
+        var response = await _client.PostAsJsonAsync("/api/events", eventDto);
 
         //Assert - participant cannot create event
-        result.Should().BeOfType<ForbidResult>();
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden)
     }
 
     [Fact]
