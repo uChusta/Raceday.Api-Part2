@@ -65,10 +65,27 @@ namespace Raceday.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.email == dto.email);
+
+            // Check if hash exists and meets minimum BCrypt length (typically 60 chars)
+            if (string.IsNullOrEmpty(user.user_password) || !user.user_password.StartsWith("$2") || user.user_password.Length < 60)
+            {
+                return Unauthorized("Invalid credentials or invalid password hash format.");
+            }
+
+            // Now safe to verify without throwing ArgumentOutOfRangeException
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(dto.user_password, user.user_password);
+            if (!isValidPassword)
+            {
+                return Unauthorized("Invalid credentials.");
+            }
+
+            /*
+
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.user_password, user.user_password))
             {
                 return Unauthorized(new { message = "Invalid email or password." });
             }
+            */
 
             // create claims for the user
             var claims = new List<Claim>

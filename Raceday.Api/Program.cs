@@ -46,8 +46,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ParticipantOnly", policy => policy.RequireRole("Participant"));
 });
 
-builder.Services.AddControllers();
-
+builder.Services.AddControllers()
+  .AddJsonOptions(options =>
+ {
+     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+ });
 
 // Swagger /OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
