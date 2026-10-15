@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Raceday.Api.Models
 {
+    [Table("Club")]
     public class Club
     {
         [Key]

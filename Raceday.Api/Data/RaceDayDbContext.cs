@@ -18,6 +18,14 @@ namespace Raceday.Api.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Explicitly map entities to match your exact SQL schema table names
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<Club>().ToTable("Club");
+            modelBuilder.Entity<Event>().ToTable("Event");
+            modelBuilder.Entity<Category>().ToTable("Category");
+            modelBuilder.Entity<Enrolment>().ToTable("Enrolment");
+            modelBuilder.Entity<Result>().ToTable("Result");
+
             modelBuilder.Entity<User>(entity =>
             { 
                 entity.HasIndex(u => u.email).IsUnique();
@@ -55,11 +63,11 @@ namespace Raceday.Api.Data
 
             modelBuilder.Entity<Enrolment>(entity =>
             {
-              entity.Property(e => e.enrolmentID).UseIdentityColumn(1001, 20);
+              entity.Property(e => e.enrolmentID).UseIdentityColumn(20058, 20);
               entity.HasOne(e => e.Participant)
                     .WithMany(u => u.Enrolments)
                     .HasForeignKey(e => e.participantID)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.NoAction);
 
               entity.HasOne(e => e.Category)
                     .WithMany(c => c.Enrolments)
@@ -69,7 +77,8 @@ namespace Raceday.Api.Data
 
             modelBuilder.Entity<Result>(entity =>
             {
-                entity.Property(r => r.resultID).UseIdentityColumn(1001, 20);
+                entity.Property(r => r.resultID).UseIdentityColumn(1, 1
+                    );
                 entity.HasOne(r => r.Enrolment)
                       .WithMany(e => e.Results)
                       .HasForeignKey(r => r.enrolmentID)
