@@ -80,6 +80,9 @@ It is Part 2 of the RaceDay API project.
   - dotnet build
   - dotnet test
 
+<img width="1341" height="605" alt="Screenshot (17)" src="https://github.com/user-attachments/assets/d6cac8b8-7fda-4bfe-ad98-7b80c0375888" />
+
+
 ## License
 Specify your license here (e.g., MIT). Replace this line with the actual license file reference.
 
